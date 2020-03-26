@@ -1,36 +1,42 @@
 import * as React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-class App extends React.Component<IAppProps, IAppState> {
-	constructor(props: IAppProps) {
-		super(props);
-		this.state = {
-			name: null
-		};
-	}
+import Home from './views/Home';
+import Details from './views/Details';
+import Admin from './views/Admin';
+import Compose from './views/Compose';
 
-	async componentDidMount() {
-		try {
-			let r = await fetch('/api/hello');
-			let name = await r.json();
-			this.setState({ name });
-		} catch (error) {
-			console.log(error);
-		}
-	}
+const App: React.FC<AppProps> = () => {
+	return (
+		// Test React return
+		// <h1 className="text-center">LoL</h1>
 
-	render() {
-		return (
-			<main className="container my-5">
-				<h1 className="text-primary text-center">Hello {this.state.name}!</h1>
-			</main>
-		);
-	}
+		// Added route paths for switching
+		// Need to add to routes for  pages
+		// /
+		// /details/:id
+		// /admin/:id
+		// /compose
+
+		<BrowserRouter>
+			<Switch>
+				<Route exact path='/'>
+					<Home />
+				</Route>
+				<Route exact path='/details/:id'>
+					<Details />
+				</Route>
+				<Route exact path='/admin/:id'>
+					<Admin />
+				</Route>
+				<Route exact path='/compose'>
+					<Compose />
+				</Route>
+			</Switch>
+		</BrowserRouter>
+	);
 }
 
-export interface IAppProps {}
-
-export interface IAppState {
-	name: string;
-}
+interface AppProps { };
 
 export default App;

@@ -5,22 +5,35 @@ const router = Router();
 
 // GET /api/chirps
 router.get('/', (req, res) => {
-    // Test / route
+    //Test / route
     // res.json({ msg: 'TEST ENDPOINT' });
-
     const data = ChirpStore.GetChirps();
-    res.json(data);
+
+    // CLIENT GET - returns an array of the keys of an object to look like api data
+    const chirps = Object.keys(data).map(key => {
+        return {
+            id: key,
+            username: data[key].username,
+            message: data[key].message
+        }
+    });
+
+    //removes id:nextid
+    chirps.pop();
+
+    //updated res.json to chirps instead of data
+    res.json(chirps);
 });
 
-// GET /api/chirps/:chirpid
+//GET /api/chirps/:chirpid
 router.get('/:chirpid', (req, res) => {
     const chirpid = req.params.chirpid;
     const chirp = ChirpStore.GetChirp(chirpid);
-    res.json(chirp);
+    res.json({ id: chirpid, ...chirp });
 });
 
 
-// POST /api/chirps
+//POST /api/chirps
 router.post('/', (req, res) => {
     const chirp = req.body;
     ChirpStore.CreateChirp(chirp);
@@ -28,7 +41,7 @@ router.post('/', (req, res) => {
 
 });
 
-// PUT /api/chirps/:chirpid
+//PUT /api/chirps/:chirpid
 router.put('/:chirpid', (req, res) => {
     const chirpid = req.params.chirpid;
     const chirp = req.body;
@@ -37,7 +50,7 @@ router.put('/:chirpid', (req, res) => {
 });
 
 
-// DELETE /api/chirps/:chirpid
+//DELETE /api/chirps/:chirpid
 router.delete('/:chirpid', (req, res) => {
     const chirpid = req.params.chirpid;
     ChirpStore.DeleteChirp(chirpid);
