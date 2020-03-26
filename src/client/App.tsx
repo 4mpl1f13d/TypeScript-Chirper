@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+import Navbar from './components/Navbar';
 import Home from './views/Home';
 import Details from './views/Details';
 import Admin from './views/Admin';
@@ -19,6 +20,7 @@ const App: React.FC<AppProps> = () => {
 		// /compose
 
 		<BrowserRouter>
+			<Navbar />
 			<Switch>
 				<Route exact path='/'>
 					<Home />
